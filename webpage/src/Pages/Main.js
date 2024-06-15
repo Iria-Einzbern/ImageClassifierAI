@@ -1,43 +1,56 @@
-// src/App.js
 import React from 'react';
-import { Upload, Button, message } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { FilePond, registerPlugin } from 'react-filepond';
+import 'filepond/dist/filepond.min.css';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
 
-const { Dragger } = Upload;
+registerPlugin(FilePondPluginImagePreview);
+const styles = {
+    filePondWrapper: {
+        width: '100%',
+        border: '1px solid #ccc',
+        borderRadius: '4px',
+        padding: '20px',
+        boxSizing: 'border-box',
+        textAlign: 'center',
+    },
+    filePond: {
+        display: 'block',
+        margin: '0 auto',
+    },
+};
 
 const Main = () => {
-    const props = {
-        name: 'file',
-        multiple: true,
-        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76', // mock upload URL, you should replace it with your own upload URL
-        onChange(info) {
-            const { status } = info.file;
-            if (status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
-            if (status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully.`);
-            } else if (status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
-        onDrop(e) {
-        console.log('Dropped files', e.dataTransfer.files);
-        },
+    const handleInit = (filePond) => {
+        // 可以在这里初始化一些状态或监听器
     };
 
     return (
-        <div style={{ width: '50%', margin: '100px auto' }}>
-        <h2>图片上传</h2>
-        <Dragger {...props}>
-            <p className="ant-upload-drag-icon">
-            <UploadOutlined />
-            </p>
-            <p className="ant-upload-text">点击或拖拽文件到此区域上传</p>
-            <p className="ant-upload-hint">
-            支持单张或多张图片上传
-            </p>
-        </Dragger>
+        <div style={styles.filePondWrapper}>
+            <FilePond
+                name="image"
+                allowMultiple={true}
+                maxFiles={10}
+                acceptedFileTypes={['image/*']}
+                oninit={handleInit}
+                labelIdle='<span class="filepond--label-action">Browse</span>'
+                stylePanelLayout={{ padding: '1em' }}
+                styleButtonRemoveItemPosition={'relative'}
+                styleButtonProcessPosition={'relative'}
+                styleLoadIndicatorPosition={'relative'}
+                styleProgressIndicatorPosition={'absolute'}
+                stylePanelAspectRatio={'1'}
+                styleRootMargin={'0 auto'}
+                styleDropZoneBackgroundColor={'#f8f8f8'}
+                styleDropZoneColor={'#666'}
+                styleDropZoneFontFamily={'Arial, sans-serif'}
+                styleDropZoneFontSize={'14px'}
+                styleDropZonePadding={'1em'}
+                styleDropZoneBorderWidth={'2px'}
+                styleDropZoneBorderColor={'#ddd'}
+                styleDropZoneBorderRadius={'4px'}
+                styleDropZoneBorderStyle={'dashed'}
+            />
         </div>
     );
 };

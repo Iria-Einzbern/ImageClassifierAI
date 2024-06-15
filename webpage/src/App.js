@@ -2,7 +2,10 @@ import Main from "./Pages/Main";
 
 function App() {
   return (
-    <Main />
+    <div style={{width:'80%'}}>
+      <Main />
+    </div>
+
   );
 }
 
