@@ -3,8 +3,11 @@ import threading
 from predicts import *
 from utils import *
 import copy
+from upload import upload_bp
 
 app = Flask(__name__)
+
+app.register_blueprint(upload_bp, url_prefix='/uploadAPI')
 
 # 定义一个全局的锁
 predict_lock = threading.Lock()
@@ -24,14 +27,8 @@ def predict_image(image_path: str, model_type: str,explain=False) -> str:
         
 
 
-
-
-
-
-
-
         
-@app.route('/predict', methods=['POST'])
+@app.route('/api/predict', methods=['POST'])
 def predict():
     try:
         # 获取请求数据

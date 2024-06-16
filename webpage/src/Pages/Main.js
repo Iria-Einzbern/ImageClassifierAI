@@ -1,56 +1,77 @@
-import React from 'react';
-import { FilePond, registerPlugin } from 'react-filepond';
-import 'filepond/dist/filepond.min.css';
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
+import React, { useState, useEffect } from 'react';
+import { Card } from "antd";
+import Upload from '../Pages/Components/upload';
 
-registerPlugin(FilePondPluginImagePreview);
 const styles = {
-    filePondWrapper: {
-        width: '100%',
-        border: '1px solid #ccc',
-        borderRadius: '4px',
-        padding: '20px',
-        boxSizing: 'border-box',
-        textAlign: 'center',
+    container: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '70%',
+        minWidth: '370px',
+        margin: 'auto',
+        height: '100%',
     },
-    filePond: {
-        display: 'block',
-        margin: '0 auto',
+    top: {
+        display: 'flex',
+        flexDirection: 'row',
+        fontSize: 'calc(16px + 0.5vw)',
+        fontWeight: 'bold',
+        margin: 'calc(20px + 0.5vw) 0 calc(10px + 0.5vw) 0',
+    },
+    card: {
+        width: '100%',
+        height: '100%',
+        marginBottom: '40px',
+    },
+    main: {
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'row', // 默认水平排布
+    },
+    mainVertical: {
+        flexDirection: 'column', // 垂直排布
+    },
+    mainLeft: {
+        flex: 1, // 默认左侧占据剩余空间
+    },
+    mainLeftMobile: {
+        flex: 'none', // 移动设备上左侧不占据剩余空间，宽度自适应
+        width: '100%',
+        marginBottom: '20px', // 添加间距以适应垂直布局
     },
 };
 
 const Main = () => {
-    const handleInit = (filePond) => {
-        // 可以在这里初始化一些状态或监听器
-    };
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            const mobile = window.innerWidth <= 768;
+            setIsMobile(mobile);
+        };
+
+        // 初始加载和窗口大小变化时监听
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        // 组件卸载时清除监听
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     return (
-        <div style={styles.filePondWrapper}>
-            <FilePond
-                name="image"
-                allowMultiple={true}
-                maxFiles={10}
-                acceptedFileTypes={['image/*']}
-                oninit={handleInit}
-                labelIdle='<span class="filepond--label-action">Browse</span>'
-                stylePanelLayout={{ padding: '1em' }}
-                styleButtonRemoveItemPosition={'relative'}
-                styleButtonProcessPosition={'relative'}
-                styleLoadIndicatorPosition={'relative'}
-                styleProgressIndicatorPosition={'absolute'}
-                stylePanelAspectRatio={'1'}
-                styleRootMargin={'0 auto'}
-                styleDropZoneBackgroundColor={'#f8f8f8'}
-                styleDropZoneColor={'#666'}
-                styleDropZoneFontFamily={'Arial, sans-serif'}
-                styleDropZoneFontSize={'14px'}
-                styleDropZonePadding={'1em'}
-                styleDropZoneBorderWidth={'2px'}
-                styleDropZoneBorderColor={'#ddd'}
-                styleDropZoneBorderRadius={'4px'}
-                styleDropZoneBorderStyle={'dashed'}
-            />
+        <div style={styles.container}>
+            <div style={styles.top}>图像预测平台</div>
+            <Card style={styles.card}>
+                <div style={isMobile ? {...styles.main, ...styles.mainVertical} : styles.main}>
+                    <Upload isMobile={isMobile}/>
+                    <div style={{...isMobile ? styles.mainLeftMobile : styles.mainLeft}}>
+                        
+                    </div>
+                </div>
+            </Card>
         </div>
     );
 };
