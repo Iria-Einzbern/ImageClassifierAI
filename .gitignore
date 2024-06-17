@@ -229,3 +229,6 @@ yarn-error.log*
 
 /model_save
 model_save/
+
+/temp_uploads
+temp_uploads/
