@@ -12,6 +12,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-width: '370px',
 }
 
 code {
@@ -23,5 +24,61 @@ code {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+
+
+@keyframes breatheLeft {
+  0% {
+      transform: translateX(0);
+  }
+  50% {
+      transform: translateX(-40px);
+  }
+  100% {
+      transform: translateX(0);
+  }
+}
+
+@keyframes breatheUp {
+  0% {
+      transform: translateY(0);
+  }
+  50% {
+      transform: translateY(-10px);
+  }
+  100% {
+      transform: translateY(0);
+  }
+}
+
+.breathing-text {
+  animation-duration: 4s; /* 动画持续时间 */
+  animation-iteration-count: infinite; /* 无限循环 */
+  animation-timing-function: ease-in-out; /* 缓入缓出 */
+  animation-name: breatheLeft; /* 默认向左移动动画 */
+
+  /* 如果是移动设备，使用向上移动动画 */
+  @media (max-width: 768px) {
+      animation-name: breatheUp;
+  }
+}
+
+@keyframes ripple {
+  0% {
+      box-shadow: 0 0 0 0 var(--color_secondary);
+  }
+  70% {
+      box-shadow: 0 0 15px 10px rgba(0, 123, 255, 0);
+  }
+  100% {
+      box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+  }
+}
+
+.ripple-effect {
+  animation: ripple 2s infinite;
+  border-radius: 10px; /* 调整圆角以匹配 div 的外观 */
+  padding: 10px; /* 添加一些内边距 */
 }
 
