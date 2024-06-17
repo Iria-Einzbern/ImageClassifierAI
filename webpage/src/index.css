@@ -82,3 +82,25 @@ code {
   padding: 10px; /* 添加一些内边距 */
 }
 
+/* index.css 或其他全局样式文件 */
+.transition {
+  transition: opacity 0.5s, transform 0.7s;
+}
+
+.fadeOutMove {
+  opacity: 0;
+  transform: translate(-30%, -40%); /* 向左上角移动 */
+}
+
+.fadeInMove {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.isTransparent {
+  opacity: 0;
+}
+.isNotTransparent {
+  opacity: 1;
+}
+

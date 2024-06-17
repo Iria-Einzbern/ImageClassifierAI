@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Card,Divider } from "antd";
+import { Button, Card,Divider } from "antd";
 import Upload from '../Pages/Components/upload';
+import Prediction from '../Pages/Components/prediction';
 import { DotChartOutlined,CaretUpFilled,CaretLeftFilled } from '@ant-design/icons';
 
 const styles = {
@@ -51,9 +52,11 @@ const styles = {
         width: '90%',
     },
     mainLeft: {
+        position: 'relative',
         flex: 1, // 默认左侧占据剩余空间
     },
     mainLeftMobile: {
+        position: 'relative',
         flex: 'none', // 移动设备上左侧不占据剩余空间，宽度自适应
         width: '100%',
         margin: '20px 0', // 添加间距以适应垂直布局
@@ -64,8 +67,10 @@ const styles = {
         boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.05)',
         padding: '10px',
         backgroundColor: 'rgb(250, 250, 250)',
+        zIndex: '10',
     },
-    mainSpace: {
+    mainSpaceMask: {
+        position: 'absolute',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -75,6 +80,7 @@ const styles = {
         width: '100%',
         //border: '1px solid #e8e8e8',
         height: '100%',
+        zIndex: '1',
     },
     mainWelcomeTitle: {
         fontSize: 'calc(20px + 1vw)',
@@ -85,14 +91,41 @@ const styles = {
         fontSize: 'calc(16px + 0.5vw)',
         fontWeight: '350',
     },
+
+    mainSpace: {
+        display: 'flex',
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        fontSize: 'calc(16px + 0.5vw)',
+        fontWeight: 'bold',
+        marginBottom: '10px',
+        width: '100%',
+        //border: '1px solid #e8e8e8',
+        height: '100%',
+        zIndex: '1',
+        transition: 'opacity 0.6s, transform 0.6s',
+    },
+    mainSpaceTitle: {
+        fontSize: 'calc(20px + 1vw)',
+        fontWeight: 'bold',
+        color: 'var(--color_primary)',
+    },
+    predictionSpace: {
+    },
 };
 
 const Main = () => {
     const [isMobile, setIsMobile] = useState(false);
     const [uploadList, setUploadList] = useState([]);
+    const [uploaded, setUploaded] = useState(false);
 
     useEffect(() => {
         console.log(uploadList)
+        if(uploadList.length > 0){
+            setUploaded(true);
+        }else{
+            setUploaded(false);
+        }
     },[uploadList])
     
     useEffect(() => {
@@ -119,19 +152,30 @@ const Main = () => {
 
             
             <div style={isMobile ? {...styles.main, ...styles.mainVertical} : styles.main}>
-                <div className='ripple-effect' style={styles.upload}>
+                <div className={`${uploaded ? '':'ripple-effect'}`} style={styles.upload}>
                     <Upload isMobile={isMobile} setUploadList={setUploadList}/>
                 </div>
 
+
                 <div style={{...isMobile ? styles.mainLeftMobile : styles.mainLeft}}>
-                    <div style={{ ...styles.mainSpace, flexDirection: isMobile ? 'column' : 'row' }}>
+                    <div style={{ ...styles.mainSpaceMask, flexDirection: isMobile ? 'column' : 'row' }} className={`transition ${uploaded ? 'fadeOutMove' : 'fadeInMove'}`}>
                         <div className='breathing-text' style={{fontSize: 'calc(25px + 2vw)',fontWeight: 'bold',color: 'var(--color_primary)'}}>{isMobile ? <CaretUpFilled /> : <CaretLeftFilled />}</div>
                         <div className='breathing-text'>
                             <div style={styles.mainWelcomeTitle}>欢迎使用</div>
                             <div style={styles.mainWelcomeSubtitle}>请在{isMobile ? '上方' : '左侧'}上传一些图片以开始 =)</div>
                         </div>
                     </div>
+
+                    <div style={{ ...styles.mainSpace, flexDirection: isMobile ? 'column' : 'column',padding: isMobile ? '5px 0' : '10px 20px'}} className={`${uploaded ? 'isNotTransparent' : 'isTransparent'}`}>
+                        <div style={styles.mainSpaceTitle}>
+                            准备预测
+                        </div>
+                        <Prediction isMobile={isMobile} uploadList={uploadList}/>
+                    </div>
+                    
                 </div>
+
+
             </div>
         </div>
     );
