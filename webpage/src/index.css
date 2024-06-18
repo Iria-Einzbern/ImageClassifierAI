@@ -45,7 +45,7 @@ code {
       transform: translateY(0);
   }
   50% {
-      transform: translateY(-10px);
+      transform: translateY(-40px);
   }
   100% {
       transform: translateY(0);
@@ -90,15 +90,18 @@ code {
 .fadeOutMove {
   opacity: 0;
   transform: translate(-30%, -40%); /* 向左上角移动 */
+  z-index: -1;
 }
 
 .fadeInMove {
   opacity: 1;
   transform: translate(0, 0);
+  z-index: 1;
 }
 
 .isTransparent {
   opacity: 0;
+  height: 50vh;
 }
 .isNotTransparent {
   opacity: 1;

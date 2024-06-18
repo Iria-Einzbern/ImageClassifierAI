@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card,Divider } from "antd";
 import Upload from '../Pages/Components/upload';
 import Prediction from '../Pages/Components/prediction';
-import { DotChartOutlined,CaretUpFilled,CaretLeftFilled } from '@ant-design/icons';
+import { DotChartOutlined,CaretUpFilled,CaretLeftFilled,RollbackOutlined } from '@ant-design/icons';
 
 const styles = {
     container: {
@@ -22,6 +22,12 @@ const styles = {
         width: '100%',
         alignItems: 'center',
         boxShadow: '0 2px 5px rgba(0, 0, 0, 0.15)',
+        zIndex: '100',
+    },
+    backToHome: {
+        fontSize: 'calc(8px + 0.5vw)',
+        fontWeight: '400',
+        color: 'gray',
     },
     topMobile: {
         height: '60px',
@@ -36,7 +42,7 @@ const styles = {
         padding: '0 15%',
     },
     main: {
-        height: '100%',
+        minHeight: '100%',
         display: 'flex',
         flexDirection: 'row', // 默认水平排布
         backgroundColor: 'white',
@@ -80,7 +86,7 @@ const styles = {
         width: '100%',
         //border: '1px solid #e8e8e8',
         height: '100%',
-        zIndex: '1',
+        //zIndex: '1',
     },
     mainWelcomeTitle: {
         fontSize: 'calc(20px + 1vw)',
@@ -101,7 +107,7 @@ const styles = {
         marginBottom: '10px',
         width: '100%',
         //border: '1px solid #e8e8e8',
-        height: '100%',
+        //height: '100%',
         zIndex: '1',
         transition: 'opacity 0.6s, transform 0.6s',
     },
@@ -109,8 +115,6 @@ const styles = {
         fontSize: 'calc(20px + 1vw)',
         fontWeight: 'bold',
         color: 'var(--color_primary)',
-    },
-    predictionSpace: {
     },
 };
 
@@ -148,6 +152,8 @@ const Main = () => {
             <div style={isMobile ? {...styles.top,...styles.topMobile} : {...styles.top,...styles.topDesktop}}>
                 <DotChartOutlined style={{marginRight: '10px',fontSize: '120%',color: 'var(--color_primary)'}}/>
                 AI图像预测平台
+                <div style={{flex: 1}}></div>
+                <div style={styles.backToHome}>返回首页<RollbackOutlined style={{marginLeft: '5px',fontSize: '150%'}}/></div>
             </div>
 
             
@@ -168,9 +174,10 @@ const Main = () => {
 
                     <div style={{ ...styles.mainSpace, flexDirection: isMobile ? 'column' : 'column',padding: isMobile ? '5px 0' : '10px 20px'}} className={`${uploaded ? 'isNotTransparent' : 'isTransparent'}`}>
                         <div style={styles.mainSpaceTitle}>
-                            准备预测
+                            准备<span style={{color:'black'}}>预测</span>
                         </div>
-                        <Prediction isMobile={isMobile} uploadList={uploadList}/>
+                        <Divider style={{margin: '5px 0'}}/>
+                        <Prediction isMobile={isMobile} uploadList={uploadList} uploaded={uploaded}/>
                     </div>
                     
                 </div>
