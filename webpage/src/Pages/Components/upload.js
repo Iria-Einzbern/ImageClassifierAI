@@ -1,9 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { FilePond, registerPlugin } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
 import 'filepond/dist/filepond.min.css';
+
+import { useDebouncedEffect } from '../../utils/useDebouncedEffect';
 
 registerPlugin(FilePondPluginImagePreview);
 
@@ -50,6 +52,7 @@ const styles = {
 };
 
 const Upload = (props) => {
+    const [uniqueId, setUniqueId] = useState(null);
     const pondRef = useRef(null);
     // 获取上传列表的函数
     const getUploadList = () => {
@@ -58,6 +61,24 @@ const Upload = (props) => {
             props.setUploadList(files);
         }
     };
+
+    useDebouncedEffect(() => {
+        // 获取唯一标识符
+        fetch('http://127.0.0.1:5555/uploadAPI/get_unique_id')
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            setUniqueId(data.unique_id);
+            console.log('Unique ID:', data.unique_id);
+          })
+          .catch(error => {
+            console.error('Error fetching unique ID:', error);
+          });
+    },100,[]);
 
 
     return (
@@ -74,7 +95,23 @@ const Upload = (props) => {
                     onupdatefiles={getUploadList}
                     credits={false}
                     {...zhCN}
-                    server='http://127.0.0.1:5555/uploadAPI/upload'
+                    //server='http://127.0.0.1:5555/uploadAPI/upload'
+                    server={{
+                        url: 'http://127.0.0.1:5555/uploadAPI',
+                        process: {
+                          url: '/upload',
+                          method: 'POST',
+                          headers: {},
+                          withCredentials: true,
+                          onload: (response) => console.log('File uploaded:', response),
+                          onerror: (response) => console.error('Upload error:', response),
+                          ondata: (formData) => {
+                            // 将 uniqueId 添加到表单数据中
+                            formData.append('unique_id', uniqueId);
+                            return formData;
+                          }
+                        }
+                    }}
                 />
             </div>
         </div>

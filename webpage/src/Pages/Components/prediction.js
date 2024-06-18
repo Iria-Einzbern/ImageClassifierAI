@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Select, Space } from 'antd';
+import { Select, Space,Button } from 'antd';
 
 
 
@@ -26,9 +26,14 @@ const Prediction = (props) => {
 
             //border: '1px solid #e8e8e8',
         },
+        startButtonSpace: {
+            marginTop: '10px',
+            width: '100%',
+            display: 'flex',
+        },
         predictionSpace: {
             width: '100%',
-            minHeight: props.uploaded ? `${props.isMobile? '800px' : '500px'}` : '100%',
+            minHeight: props.uploaded ? `${props.isMobile? '400px' : '500px'}` : '100%',
             //border: '1px solid #e8e8e8',
         },
     }
@@ -57,7 +62,7 @@ const Prediction = (props) => {
         <div style={styles.container}>
             <div style={styles.lineUpSpace}>当前有xx人正在预测，预计等待xx分钟</div>
             <div style={styles.modelChoose}>
-                <div style={{lineHeight: '40px'}}>选择一个模型：</div>
+                <div style={{lineHeight: '40px'}}>选择一个任务：</div>
                 <Select
                     defaultValue="lucy"
                     style={{
@@ -66,6 +71,10 @@ const Prediction = (props) => {
                     }}
                     options={modelList}
                 />
+            </div>
+            <div style={styles.startButtonSpace}>
+                <div style={{flex: 1}}></div>
+                <Button onClick={()=>console.log(props.uploadList)}>开始预测</Button>
             </div>
             <div style={styles.predictionSpace}>
                 

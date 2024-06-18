@@ -6,6 +6,7 @@ import { DotChartOutlined,CaretUpFilled,CaretLeftFilled,RollbackOutlined } from 
 
 const styles = {
     container: {
+        position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -116,6 +117,16 @@ const styles = {
         fontWeight: 'bold',
         color: 'var(--color_primary)',
     },
+
+
+    bottom: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        alignItems: 'center',
+        marginTop: '5%',
+    },
 };
 
 const Main = () => {
@@ -148,7 +159,7 @@ const Main = () => {
 
     return (
         <div style={styles.container}>
-            <div style={isMobile ? {height:'60px',width:'100%',margin: '10px 0',} : {height:'80px',width:'100%',margin: 'calc(20px + 0.5vw) 0 calc(10px + 0.5vw) 0',}}></div>
+            <div style={isMobile ? {height:'60px',width:'100%',margin: '10px 0',} : {height:'60px',width:'100%',margin: 'calc(20px + 0.5vw) 0 calc(10px + 0.5vw) 0',}}></div>
             <div style={isMobile ? {...styles.top,...styles.topMobile} : {...styles.top,...styles.topDesktop}}>
                 <DotChartOutlined style={{marginRight: '10px',fontSize: '120%',color: 'var(--color_primary)'}}/>
                 AI图像预测平台
